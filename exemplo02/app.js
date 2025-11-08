@@ -113,20 +113,8 @@ function montarMapa(dadosLocais) {
 
     // Adiciona marcadores para cada local:
     dadosLocais.forEach((local) => {
-        let popup = new mapboxgl.Popup({ offset: 25 })
-            .setHTML(`<h3>
-                        <a href="${local.url}" target="_blank">
-                          ${local.descricao}
-                        </a>
-                      </h3>
-                      <br>${local.endereco} 
-                      <br> ${local.cidade}`);
-
-        const marker = new mapboxgl.Marker({ color: local.cor })
-            .setLngLat(local.latlong)
-            .setPopup(popup)
-            .addTo(map);
-    });
+        configurarMarcador(lugar);
+    })
 
     // Obtém a localização do usuário e adiciona um marcador:
     navigator.geolocation.getCurrentPosition(processarGetCurrentPosition, () => { alert('Erro ao obter localização.') });
@@ -171,7 +159,7 @@ function processar() {
 
 function configurarMarcador(lugar) {
     let popup = new mapboxgl.Popup({ offset: 25 })
-        .setHTML(`<h3><a href="${lugar.url}" alt="Localização">${lugar.nome}</a></h3>
+        .setHTML(`<h3><a href="${lugar.url}" target="_blank" alt="Localização">${lugar.nome}</a></h3>
                     ${lugar.descricao}<br>
                     ${lugar.endereco}`);
 
