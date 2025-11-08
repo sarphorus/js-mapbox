@@ -1,7 +1,7 @@
 let map;
 let id = 9;
 const centralLatLong = [-43.9397233, -19.9332786]; // Ponto central do mapa (Belo Horizonte).
-
+let endpoints = 'https://841aa6f2-2d74-4ecd-ad86-62e417539d9e-00-3eaw6gpoi715h.picard.replit.dev/';
 const locais = [
     {
         "id": 1,
@@ -145,36 +145,38 @@ function processarGetCurrentPosition(local) {
 
 function processar() {
     const nome = document.getElementById("nome").value.trim();
+    const descricao = document.getElementById("descricao").value.trim();
+    const endereco = document.getElementById("endereco").value.trim();
+    const url = document.getElementById("url").value.trim();
     const latitude = document.getElementById("latitude").value.trim();
     const longitude = document.getElementById("longitude").value.trim();
     const cor = document.getElementById("cor").value;
 
     var local = {
         "id": id++,
-        "descricao": "informar...",
-        "endereco": "informar...",
+        "descricao": descricao,
+        "endereco": endereco,
         "favorito": true,
         "cidade": nome,
         "latlong": [
             latitude,
             longitude
         ],
-        "url": "informar",
+        "url": url,
         "cor": cor
     };
 
-    processarPosicao(local);
+    configurarMarcador(local);
 }
 
-// Função para processar a localização:
-function processarPosicao(local) {
+function configurarMarcador(lugar) {
     let popup = new mapboxgl.Popup({ offset: 25 })
-        .setHTML(`<h3>${local.cidade}</h3>
-                  ${local.descricao}<br>
-                  ${local.endereco}`);
+        .setHTML(`<h3><a href="${lugar.url}" alt="Localização">${lugar.nome}</a></h3>
+                    ${lugar.descricao}<br>
+                    ${lugar.endereco}`);
 
-    const marker = new mapboxgl.Marker({ color: local.cor })
-        .setLngLat([local.latlong[1], local.latlong[0]])
+    const marker = new mapboxgl.Marker({ color: lugar.cor })
+        .setLngLat([lugar.latlong[1], lugar.latlong[0]])
         .setPopup(popup)
         .addTo(map);
 }
